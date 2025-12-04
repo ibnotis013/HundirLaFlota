@@ -6,17 +6,30 @@ public class Tablero {
      * Lo devuelve como resultado!
      */
     public static int[][] crearTableroBarcos(int filas, int columnas) {
-        // TODO
-        return null;
+        int[][] tablero = new int[filas][columnas];
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                tablero[i][j]=-1;
+            }
+        }
+        return tablero;
     }
+
 
     /**
      * Crea un tablero de disparos y lo inicializa a '~' (no disparado).
      */
     public static char[][] crearTableroDisparos(int filas, int columnas) {
-        // TODO
+        char[][] tablero = new char[filas][columnas];
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                tablero[i][j]='~';
+            }
+        }
+
         return null;
     }
+
 
     /**
      * Muestra un tablero de disparos (del jugador o de la CPU).

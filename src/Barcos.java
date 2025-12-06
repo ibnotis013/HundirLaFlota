@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Barcos {
 
 
@@ -5,38 +7,33 @@ public class Barcos {
      * Coloca todos los barcos indicados en tamanosBarcos. El array tamanosBarcos da los tamaños,
      * por ejemplo, 5, 4, 3, 3, 2. Así que para el barco "0" tienes que colocarlo en 5 posiciones consecutivas,
      * ya sea en horizontal o en vertical.
-     *
+     * <p>
      * Usa valores aleatorios para fila, columna y orientación (horizontal/vertical),
      * comprobando que:
-     *  - no se sale del tablero
-     *  - no se solapa con otros barcos
-     *
-     *  Recuerda, hay una función específica para colocar un barco. No dupliques el código aquí, desde aquí
-     *  llama a esa función.
+     * - no se sale del tablero
+     * - no se solapa con otros barcos
+     * <p>
+     * Recuerda, hay una función específica para colocar un barco. No dupliques el código aquí, desde aquí
+     * llama a esa función.
      *
      */
     public static void colocarBarcosAleatorios(int[][] tableroBarcos, int[] tamanosBarcos) {
-        Random rand = new Random();
-        for (int idBarco = 0; idBarco < tamanosBarcos.length; idBarco++) {
+        Random barcosRandom = new Random();
+
+        for (int i = 0; i < tamanosBarcos.length; i++) {
             boolean colocado = false;
             while (!colocado) {
-                int fila = rand.nextInt(tableroBarcos.length);
-                int columna = rand.nextInt(tableroBarcos[0].length);
-                boolean horizontal = rand.nextBoolean();
-                if (sePuedeColocarBarco(tableroBarcos, fila, columna,
-                        tamanosBarcos[idBarco], horizontal)) {
-                    colocarBarco(tableroBarcos, fila, columna,
-                            tamanosBarcos[idBarco], horizontal, idBarco);
+                int fila = barcosRandom.nextInt(tableroBarcos.length);
+                int columna = barcosRandom.nextInt(tableroBarcos[0].length);
+                boolean horizontal = barcosRandom.nextBoolean();
+                if (sePuedeColocarBarco(tableroBarcos, fila, columna,tamanosBarcos[i], horizontal)) {
+                    colocarBarco(tableroBarcos, fila, columna,tamanosBarcos[i], horizontal, i);
                     colocado = true;
                 }
             }
         }
     }
 
-
-
-                    // TODO
-    }
 
     /**
      * Comprueba si un barco de cierto tamaño cabe desde (fila, columna) en la orientación
@@ -45,26 +42,48 @@ public class Barcos {
      * Nos devuelve true si se puede colocar, false si no se puede colocar.
      */
     public static boolean sePuedeColocarBarco(int[][] tablero, int fila, int columna, int tamano, boolean horizontal) {
-        //TODO
-        return false;
+        if (horizontal) {
+            if (columna + tamano > tablero[0].length) return false;
+            for (int i = columna; i < columna + tamano; i++) {
+                if (tablero[fila][i] != -1) return false;
+            }
+        } else {
+            if (fila + tamano > tablero.length) return false;
+            for (int i = fila; i < fila + tamano; i++) {
+                if (tablero[i][columna] != -1) return false;
+            }
+        }
+        return true;
     }
+
 
     /**
      * Coloca realmente el barco en el tablero, escribiendo su ID en todas las celdas.
      */
     public static void colocarBarco(int[][] tablero, int fila, int columna, int tamano, boolean horizontal, int idBarco) {
-        // TODO
+        if (horizontal) {
+            for (int i = columna; i < columna + tamano; i++) {
+                tablero[fila][i] = idBarco;
+            }
+        } else {
+            for (int i = fila; i < fila + tamano; i++) {
+                tablero[i][columna] = idBarco;
+            }
+        }
     }
 
-    /**
-     * Comprueba si TODOS los barcos han sido hundidos.
-     * Esto ocurre cuando impactos[i] == tamanosBarcos[i] para todos los barcos.
-     *
-     * Lo puedes llamar tras hacer un impacto con los arrays de impactos y tamaños
-     * del jugador atacado para comprobar si ha acabado la partida.
-     */
-    public static boolean todosHundidos(int[] impactos, int[] tamanosBarcos) {
-        //TODO
-        return false;
+        /**
+         * Comprueba si TODOS los barcos han sido hundidos.
+         * Esto ocurre cuando impactos[i] == tamanosBarcos[i] para todos los barcos.
+         *
+         * Lo puedes llamar tras hacer un impacto con los arrays de impactos y tamaños
+         * del jugador atacado para comprobar si ha acabado la partida.
+         */
+
+        public static boolean todosHundidos ( int[] impactos, int[] tamanosBarcos){
+            for (int i = 0; i < impactos.length; i++) {
+                if (impactos[i] < tamanosBarcos[i]) return false;
+            }
+            return true;
+        }
     }
-}

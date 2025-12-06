@@ -1,5 +1,6 @@
 public class Barcos {
 
+
     /**
      * Coloca todos los barcos indicados en tamanosBarcos. El array tamanosBarcos da los tamaños,
      * por ejemplo, 5, 4, 3, 3, 2. Así que para el barco "0" tienes que colocarlo en 5 posiciones consecutivas,
@@ -15,7 +16,26 @@ public class Barcos {
      *
      */
     public static void colocarBarcosAleatorios(int[][] tableroBarcos, int[] tamanosBarcos) {
-        // TODO
+        Random rand = new Random();
+        for (int idBarco = 0; idBarco < tamanosBarcos.length; idBarco++) {
+            boolean colocado = false;
+            while (!colocado) {
+                int fila = rand.nextInt(tableroBarcos.length);
+                int columna = rand.nextInt(tableroBarcos[0].length);
+                boolean horizontal = rand.nextBoolean();
+                if (sePuedeColocarBarco(tableroBarcos, fila, columna,
+                        tamanosBarcos[idBarco], horizontal)) {
+                    colocarBarco(tableroBarcos, fila, columna,
+                            tamanosBarcos[idBarco], horizontal, idBarco);
+                    colocado = true;
+                }
+            }
+        }
+    }
+
+
+
+                    // TODO
     }
 
     /**

@@ -1,10 +1,8 @@
 public class Tablero {
 
-    /**
-     * Crea un tablero de barcos y lo inicializa a -1 (sin barco).
-     * En las posiciones del barco, guardaremos su id más adelante.
-     * Lo devuelve como resultado!
-     */
+
+
+
     public static int[][] crearTableroBarcos(int filas, int columnas) {
         int[][] tablero = new int[filas][columnas];
         for (int i = 0; i < filas; i++) {
@@ -15,20 +13,16 @@ public class Tablero {
         return tablero;
     }
 
-
-    /**
-     * Crea un tablero de disparos y lo inicializa a '~' (no disparado).
-     */
     public static char[][] crearTableroDisparos(int filas, int columnas) {
-        char[][] tablero = new char[filas][columnas];
+        char[][] tableroDisparos = new char[filas][columnas];
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
-                tablero[i][j]='~';
+                tableroDisparos[i][j]='~';
             }
         }
-
-        return null;
+        return tableroDisparos;
     }
+
 
 
     /**
@@ -38,11 +32,27 @@ public class Tablero {
      *
      * Recibe como entrada el tablero a imprimir, no devuelve nada de salida, simplemente lo imprime.
      */
+
     public static void mostrarTableroDisparos(char[][] tableroDisparos) {
-       // TODO
+        System.out.print(" ");
+        for (int j = 0; j < tableroDisparos[0].length; j++) {
+            System.out.print(j + " ");
+        }
+        System.out.println();
+        for (int i = 0; i < tableroDisparos.length; i++) {
+            System.out.print(i + " ");
+            for (int j = 0; j < tableroDisparos[i].length; j++) {
+                System.out.print(tableroDisparos[i][j] + " ");
+            }
+            System.out.println();
+
+        }
     }
 
+
+
     /**
+
      * Muestra el tablero del jugador con sus barcos y el estado de disparos
      * de la CPU (agua, tocado, hundido). EL objetivo de esta función es mostrar
      * al usuario sus barcos junto a los disparos del enemigo (en un sólo tablero).
@@ -58,14 +68,39 @@ public class Tablero {
      * - hay un barco, el barco "1": 1
      */
     public static void mostrarTableroConBarcos(int[][] tableroBarcos, char[][] tableroDisparosCPU) {
-        // TODO
+
+        System.out.print(" ");
+        for (int j = 0; j < tableroBarcos[0].length; j++) {
+            System.out.print(j + " ");
+        }
+        System.out.println();
+        for (int i = 0; i < tableroBarcos.length; i++) {
+            System.out.print(i + " ");
+            for (int j = 0; j < tableroBarcos[i].length; j++) {
+                if (tableroBarcos[i][j] == -1) {
+                    System.out.print(tableroDisparosCPU[i][j] == '~' ? '.' :
+                            '~');
+                } else {
+                    if (tableroDisparosCPU[i][j] == 'T') {
+                        System.out.print('T');
+                    } else if (tableroDisparosCPU[i][j] == 'H') {
+                        System.out.print('H');
+                    } else {
+                        System.out.print(tableroBarcos[i][j]);
+                    }
+                }
+                System.out.print(" ");
+            }
+            System.out.println();
+        }
     }
+    
 
     /**
      * Comprueba si una coordenada está dentro del tablero. Devuelve "true" si está, "false" si no está.
      */
     public static boolean esCoordenadaValida(int fila, int columna, int filas, int columnas) {
-         // TODO
-        return false;
+
+        return fila >= 0 && fila < filas && columna >= 0 && columna < columnas;
     }
 }

@@ -1,5 +1,7 @@
 public class Disparos {
 
+
+
     /**
      * Devuelve true si ya se ha disparado previamente a esta casilla
      * (es decir, tableroDisparos[fila][columna] != '~'). Deberías de llamarlo cuando se intenta disparar,
@@ -28,7 +30,26 @@ public class Disparos {
             int[] impactosBarco,
             int[] tamanosBarco
     ) {
-        // TODO
+
+        int idBarco = tableroBarcos[fila][columna];
+        if (idBarco == -1) {
+            tableroDisparos[fila][columna] = 'A'; // Agua
+            return false;
+        }
+        impactosBarco[idBarco] = impactosBarco[idBarco] + 1;
+
+        if (impactosBarco[idBarco] < tamanosBarco[idBarco]) {
+            tableroDisparos[fila][columna] = 'T'; // Tocado
+            return false;
+        }
+        for (int i = 0; i < tableroBarcos.length; i++) {
+            for (int j = 0; j < tableroBarcos[0].length; j++) {
+                if (tableroBarcos[i][j] == idBarco) {
+                    tableroDisparos[i][j] = 'H';
+                }
+            }
+        }
         return true;
+
     }
 }

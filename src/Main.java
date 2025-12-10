@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        // Tamaños de los barcos (podéis cambiarlos si queréis)
+        // Tamaños de los barcos (podéis cambiarlos si queráis)
         // Esto implica que hay 5 barcos de 5, 4, dos de 3, 2 casillas.
         int[] tamanosBarcos = {5, 4, 3, 3, 2};
         int numBarcos = tamanosBarcos.length;
@@ -32,14 +32,18 @@ public class Main {
         int[] impactosJugador = new int[numBarcos];
         int[] impactosCPU = new int[numBarcos];
 
-
         // (aunque Java ya los inicializa a 0, hacedlo explícitamente con un for)
+        for (int i = 0; i < numBarcos; i++) {
+            impactosJugador[i] = 0;
+            impactosCPU[i] = 0;
+        }
 
         // Colocar barcos
         System.out.println("Colocando barcos del jugador...");
-
+        Barcos.colocarBarcosAleatorios(tableroBarcosJugador, tamanosBarcos);
 
         System.out.println("Colocando barcos de la CPU...");
+        Barcos.colocarBarcosAleatorios(tableroBarcosCPU, tamanosBarcos);
 
         boolean finPartida = false;
         boolean turnoJugador = true;
@@ -51,14 +55,15 @@ public class Main {
             System.out.println("=============================");
             System.out.println("HUNDIR LA FLOTA - NUEVO TURNO");
             System.out.println("=============================");
+
             if (turnoJugador) {
                 System.out.println("Turno del JUGADOR");
                 // Mostrar tableros relevantes
                 System.out.println("Tu tablero (tus barcos):");
-
+                Tablero.mostrarTableroConBarcos(tableroBarcosJugador, tableroDisparosCPU);
 
                 System.out.println("Tus disparos sobre la CPU:");
-
+                Tablero.mostrarTableroDisparos(tableroDisparosJugador);
 
                 // Pedir coordenada
                 System.out.print("Introduce coordenada (ej. A5): ");
@@ -67,7 +72,6 @@ public class Main {
                 // sc.nextLine().trim(): a esa siguiente línea, le aplica trim, que elimina espacios en blanco y \n antes y después
                 // sc.nextLine().trim().toUpperCase: convierte la cadena que devolvió trim() a mayúsculas
                 String coord = sc.nextLine().trim().toUpperCase();
-
 
                 int fila = Utilidades.convertirFila(coord);
                 int columna = Utilidades.convertirColumna(coord);
@@ -79,21 +83,43 @@ public class Main {
                 } else if (Disparos.yaDisparado(tableroDisparosJugador, fila, columna)) {
                     System.out.println("Ya habías disparado ahí. Pierdes el turno.");
                 } else {
-
                     // Dile al usuario si ha hundido un barco.
+                    boolean barcoHundidoCPU = Disparos.procesarDisparo(
+                            fila,
+                            columna,
+                            tableroBarcosCPU,
+                            tableroDisparosJugador,
+                            impactosCPU,
+                            tamanosBarcos
+                    );
+
+                    if (barcoHundidoCPU) {
+                        System.out.println("¡Has hundido un barco de la CPU!");
+                    } else if (tableroBarcosCPU[fila][columna] != -1) {
+                        System.out.println("¡Tocado!");
+                    } else {
+                        System.out.println("Agua...");
+                    }
                 }
 
                 // si es así, configura el final de la partida y di el resultado.
+                if (Barcos.todosHundidos(impactosCPU, tamanosBarcos)) {
+                    System.out.println("¡Has ganado! Todos los barcos de la CPU han sido hundidos.");
+                    finPartida = true;
+                }
 
             } else {
                 System.out.println("Turno de la CPU");
                 // Hacemos el turno de la CPU
-                int filaCPU = Utilidades.numeroAleatorio(0, FILAS - 1);
-                int columnaCPU = Utilidades.numeroAleatorio(0, COLUMNAS - 1);
+                int filaCPU, columnaCPU;
 
+                // Evitar coordenadas repetidas
+                do {
+                    filaCPU = Utilidades.numeroAleatorio(0, FILAS - 1);
+                    columnaCPU = Utilidades.numeroAleatorio(0, COLUMNAS - 1);
+                } while (Disparos.yaDisparado(tableroDisparosCPU, filaCPU, columnaCPU));
 
                 // coordenada.
-
                 System.out.println("La CPU dispara a (" + filaCPU + ", " + columnaCPU + ")");
 
                 // Ejecutamos el disparo de la CPU
@@ -108,6 +134,10 @@ public class Main {
 
                 if (barcoHundidoJugador) {
                     System.out.println("La CPU te ha hundido un barco...");
+                } else if (tableroBarcosJugador[filaCPU][columnaCPU] != -1) {
+                    System.out.println("La CPU ha tocado uno de tus barcos...");
+                } else {
+                    System.out.println("La CPU ha fallado. Agua...");
                 }
 
                 // Comprobamos si el jugador ha perdido todos los barcos.

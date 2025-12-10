@@ -32,15 +32,14 @@ public class Main {
         int[] impactosJugador = new int[numBarcos];
         int[] impactosCPU = new int[numBarcos];
 
-        // TODO: Inicializar los arrays impactosJugador e impactosCPU a 0
+
         // (aunque Java ya los inicializa a 0, hacedlo explícitamente con un for)
 
         // Colocar barcos
         System.out.println("Colocando barcos del jugador...");
-        // TODO: Usa la función adecuada para colocarlos.
+
 
         System.out.println("Colocando barcos de la CPU...");
-        // TODO: usa la función adecuada para colocarlos.
 
         boolean finPartida = false;
         boolean turnoJugador = true;
@@ -56,10 +55,10 @@ public class Main {
                 System.out.println("Turno del JUGADOR");
                 // Mostrar tableros relevantes
                 System.out.println("Tu tablero (tus barcos):");
-                // TODO: imprime el tablero
+
 
                 System.out.println("Tus disparos sobre la CPU:");
-                // TODO: imprime los disparos sobre la CPU (no se pueden ver los barcos de la CPU!)
+
 
                 // Pedir coordenada
                 System.out.print("Introduce coordenada (ej. A5): ");
@@ -69,10 +68,7 @@ public class Main {
                 // sc.nextLine().trim().toUpperCase: convierte la cadena que devolvió trim() a mayúsculas
                 String coord = sc.nextLine().trim().toUpperCase();
 
-                // TODO: Validar la coordenada (formato mínimo, longitud, etc.)
-                // TODO: Convertir la coordenada (ej. 'A5') en fila y columna (int)
-                // TODO: si no es una coordenada válida, hay que volver a pedirla.
-                // TODO: si el formato de la coordenada no es válido, vuelve a pedirla.
+
                 int fila = Utilidades.convertirFila(coord);
                 int columna = Utilidades.convertirColumna(coord);
 
@@ -83,11 +79,10 @@ public class Main {
                 } else if (Disparos.yaDisparado(tableroDisparosJugador, fila, columna)) {
                     System.out.println("Ya habías disparado ahí. Pierdes el turno.");
                 } else {
-                    // TODO: usa la función de disparar para procesar el disparo.
+
                     // Dile al usuario si ha hundido un barco.
                 }
 
-                // TODO: Comprobar si la CPU ha perdido todos los barcos con la función adecuada
                 // si es así, configura el final de la partida y di el resultado.
 
             } else {
@@ -96,7 +91,7 @@ public class Main {
                 int filaCPU = Utilidades.numeroAleatorio(0, FILAS - 1);
                 int columnaCPU = Utilidades.numeroAleatorio(0, COLUMNAS - 1);
 
-                // TODO: si ya había disparado a la coordenada, no ejecutamos el disparo, generamos otra
+
                 // coordenada.
 
                 System.out.println("La CPU dispara a (" + filaCPU + ", " + columnaCPU + ")");
